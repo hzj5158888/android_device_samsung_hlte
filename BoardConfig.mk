@@ -126,3 +126,6 @@ TARGET_INIT_VENDOR_LIB := libinit_msm
 TARGET_LIBINIT_DEFINES_FILE := device/samsung/hlte/init/init_hlte.c
 
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/hlte
+
+# Fix DEXPREOPT EXT
+PRODUCT_BOOT_JARS := $(subst $(space),:,$(PRODUCT_BOOT_JARS))
