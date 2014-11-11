@@ -62,6 +62,14 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         property_set("ro.product.model", "SM-N9005");
         property_set("ro.product.device", "hltexx");
     }
+    else if (strstr(bootloader, "N9006")) {
+        /* hltezh */
+        property_set("ro.build.fingerprint", "samsung/hltezh/hlte:4.4.2/KOT49H/N9006ZHUENE6:user/release-keys");
+        property_set("ro.build.description", "hltezh-user 4.4.2 KOT49H N9006ZHUENE6 release-keys");
+        property_set("ro.product.model", "SM-N9006");
+        property_set("ro.product.device", "hltezh");
+        property_set("ro.telephony.ril.v3", "newDialCode");
+    } 
     property_get("ro.product.device", device);
     strlcpy(devicename, device, sizeof(devicename));
     ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
