@@ -7,4 +7,4 @@ $(call inherit-product, vendor/mk/config/nfc_enhanced.mk)
 $(call inherit-product, vendor/mk/config/common_full_phone.mk)
 
 PRODUCT_DEVICE := hlte
-PRODUCT_NAME := MK_hlte
+PRODUCT_NAME := mk_hlte
