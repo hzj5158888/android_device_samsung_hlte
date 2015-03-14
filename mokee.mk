@@ -1,3 +1,6 @@
+# Exclude GoogleIME
+TARGET_EXCLUDE_GOOGLE_IME := true
+
 $(call inherit-product, device/samsung/hlte/full_hlte.mk)
 
 # Enhanced NFC
