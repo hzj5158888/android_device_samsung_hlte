@@ -28,15 +28,25 @@
  */
 
 #include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
+#include <cutils/properties.h>
 #include "vendor_init.h"
-#include "property_service.h"
 #include "log.h"
 #include "util.h"
 
-#include "init_msm.h"
+#include "init_msm8974.h"
 
-void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *board_type)
+void gsm_properties()
+{
+    property_set("ro.telephony.default_network", "9");
+    property_set("telephony.lteOnGsmDevice", "1");
+}
+
+#define ISMATCH(a, b) (!strncmp((a), (b), PROP_VALUE_MAX))
+
+void init_target_properties()
 {
     char platform[PROP_VALUE_MAX];
     char bootloader[PROP_VALUE_MAX];
@@ -44,44 +54,36 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     char devicename[PROP_VALUE_MAX];
     int rc;
 
-    UNUSED(msm_id);
-    UNUSED(msm_ver);
-    UNUSED(board_type);
-
-    rc = property_get("ro.board.platform", platform);
+    rc = property_get("ro.board.platform", platform, NULL);
     if (!rc || !ISMATCH(platform, ANDROID_TARGET))
         return;
 
-    property_get("ro.bootloader", bootloader);
+    property_get("ro.bootloader", bootloader, NULL);
 
-    gsm_properties();
     if (strstr(bootloader, "N900S")) {
         /* hlteskt */
         property_set("ro.build.fingerprint", "samsung/hlteskt/hlte:4.4.2/KOT49H/N900SKSUFNH4:user/release-keys");
         property_set("ro.build.description", "hlteskt-user 4.4.2 KOT49H N900SKSUFNH4 release-keys");
         property_set("ro.product.model", "SM-N900S");
         property_set("ro.product.device", "hlteskt");
+        gsm_properties();
     } else if (strstr(bootloader, "N900K")) {
         /* hltektt */
         property_set("ro.build.fingerprint", "samsung/hltektt/hlte:4.4.2/KOT49H/N900KKKUFNI1:user/release-keys");
         property_set("ro.build.description", "hltektt-user 4.4.2 KOT49H N900KKKUFNI1 release-keys");
         property_set("ro.product.model", "SM-N900K");
         property_set("ro.product.device", "hltektt");
+        gsm_properties();
     } else {
         /* hltexx */
         property_set("ro.build.fingerprint", "samsung/hltexx/hlte:4.4.2/KOT49H/N9005XXUENC2:user/release-keys");
         property_set("ro.build.description", "hltexx-user 4.4.2 KOT49H N9005XXUENC2 release-keys");
         property_set("ro.product.model", "SM-N9005");
         property_set("ro.product.device", "hltexx");
+        gsm_properties();
     }
 
-    property_get("ro.product.device", device);
+    property_get("ro.product.device", device, NULL);
     strlcpy(devicename, device, sizeof(devicename));
     ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
-}
-
-void gsm_properties()
-{
-    property_set("ro.telephony.default_network", "9");
-    property_set("telephony.lteOnGsmDevice", "1");
 }
